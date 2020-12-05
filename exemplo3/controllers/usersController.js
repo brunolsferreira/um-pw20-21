@@ -1,17 +1,20 @@
 function getAll(req, res) {
-    let sql = "SELECT * FROM users";
+    let sql = "SELECT username, name, email FROM users";
     global.connection.query(sql, function(err, results) {
-        if (err) return res.status(500).end();
+        if (err) {
+            console.log(err);
+            return res.status(500).end();
+        }
         res.json(results);
     });      
 }
 
 function getOne(req, res) {
-    let sql = "SELECT * FROM users WHERE username=?";
+    let sql = "SELECT username, name, email FROM users WHERE username=?";
     global.connection.query(sql, req.params.username, function(err, results) {
         if (err) return res.status(500).end();
         if (results.length == 0) return res.status(404).end();
-        return res.json(results);
+        return res.json(results[0]);
     });
 }
 
